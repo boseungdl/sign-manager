@@ -1,0 +1,22 @@
+# ==========================================================
+# src/main/resources/application-dev.yml: 개발 환경(dev profile)에서 적용되는 설정
+# ==========================================================
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/signmanager # 개발용 DB 주소 (application.yml 덮어씀)
+    username: root
+    password: ${DB_DEV_PASSWORD:local_dev_password} # .env 또는 환경 변수 사용
+  jpa:
+    hibernate:
+      ddl-auto: update # 개발 환경에서는 DDL 자동 업데이트 사용 (편의성)
+  output:
+    ansi:
+      enabled: ALWAYS # (기본값) 터미널이 ANSI를 지원하면 컬러 출력
+  logging:
+    level:
+      # 우리 프로젝트 패키지는 개발 중에 상세 로그를 위해 DEBUG 레벨로 설정
+      com.example.signmanager: DEBUG
+      # SQL 쿼리 및 파라미터까지 상세히 보고 싶을 때 (개발 시 매우 유용)
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
