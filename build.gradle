@@ -2,6 +2,21 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.0'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id "com.diffplug.spotless" version "6.20.0"
+}
+
+
+ext.googleJavaFormatVersion = "1.10.0"
+
+spotless {
+	java {
+		importOrder()
+		removeUnusedImports()
+		cleanthat()
+		palantirJavaFormat()
+		formatAnnotations()
+		// targetExclude("src/main/generated/**/*.java")
+	}
 }
 
 group = 'com.example'
@@ -27,6 +42,8 @@ ext {
 	set('springAiVersion', "1.0.0")
 }
 
+
+
 dependencies {
 	// 코어 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -48,4 +65,10 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// pre-commit 훅 스크립트를 .git/hooks로 복사하는 태스크
+tasks.register('updateGitHooks', Copy) {
+	from './scripts/pre-commit'
+	into './.git/hooks'
 }
