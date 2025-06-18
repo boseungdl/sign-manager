@@ -1,0 +1,24 @@
+# ==========================================================
+# src/main/resources/application-prod.yml: 운영 환경(prod profile)에서 적용되는 설정
+# ==========================================================
+
+spring:
+  datasource:
+    url: jdbc:mariadb://prod-db-endpoint:3306/signmanager_prod # 실제 운영 DB 주소
+    username: prod_user
+    password: ${DB_PROD_PASSWORD:must_be_set_in_env} # .env 또는 환경 변수 사용 (운영에서는 필수)
+    hikari:
+      minimum-idle: 10 # 운영은 최소 커넥션 수 더 높게
+      maximum-pool-size: 50 # 운영은 최대 커넥션 수 더 높게
+  jpa:
+    hibernate:
+      ddl-auto: none # 운영에서는 DDL 자동 변경 사용 금지 (데이터 손실 방지)
+      # 또는 'validate'를 사용하여 엔티티와 스키마 불일치만 검증
+  logging:
+    level:
+      com.example.signmanager: INFO # 운영은 중요 로그만
+      org.hibernate.SQL: INFO # 운영은 SQL 쿼리 로그 INFO로 줄임
+      root: INFO # 루트 로거도 INFO (WARN, ERROR 위주)
+      # 로그 파일 설정은 logback-spring.xml에서 별도로 관리합니다 (필요시)
+server:
+  port: 80 # 웹 서비스 기본 포트 (HTTP)

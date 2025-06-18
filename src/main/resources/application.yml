@@ -1,0 +1,53 @@
+# ==========================================================
+# src/main/resources/application.yml: 모든 환경에 공통 적용되는 기본 설정
+# ==========================================================
+
+# .env 파일을 자동으로 로드하여 환경 변수로 사용합니다.
+# 파일이 없어도 에러를 발생시키지 않습니다 (optional:).
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: dev
+
+  application:
+    name: signmanager-app # 애플리케이션의 이름 (로깅, 모니터링 시 사용)
+
+  # 데이터베이스 설정 (MariaDB)
+  # 비밀번호는 .env 파일 또는 시스템 환경 변수에서 가져오며,
+  # 없을 경우 'default_password'가 사용됩니다.
+  datasource:
+    url: jdbc:mariadb://localhost:3306/signmanager # 기본적으로 로컬 개발 DB 주소
+    username: root
+    password: ${DB_PASSWORD:default_password} # .env 또는 환경 변수 사용
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari: # HikariCP 설정 (Spring Boot 기본 Connection Pool)
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 30000 # 30초 (ms)
+      idle-timeout: 600000 # 10분 (ms)
+      max-lifetime: 1800000 # 30분 (ms)
+
+  # JPA (Hibernate) 설정
+  jpa:
+    hibernate:
+      # DDL 자동 생성 기능 비활성화.
+      # 개발 중에는 'update'로 변경하여 스키마 자동 동기화를 고려할 수 있습니다.
+      # 운영 환경에서는 'none' 또는 'validate'를 사용해야 합니다.
+      ddl-auto: none
+    show-sql: true # JPA가 실행하는 SQL 쿼리를 콘솔에 출력
+    properties:
+      hibernate:
+        format_sql: true # SQL 쿼리를 예쁘게 포맷팅하여 출력
+        dialect: org.hibernate.dialect.MariaDBDialect # 사용하는 DB 방언 명시
+
+  # 로깅 설정 (기본 레벨)
+  logging:
+    level:
+      root: INFO # 기본적으로 모든 로그는 INFO 레벨부터 출력
+      org.springframework: INFO # Spring 프레임워크 로그는 INFO
+      org.hibernate: INFO # Hibernate 관련 로그는 INFO
+      org.springframework.web: INFO # 웹 관련 로그는 INFO
+
+server:
+  port: 8080 # 애플리케이션이 실행될 기본 포트

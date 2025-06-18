@@ -1,0 +1,53 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+
+
+
+# 환경 변수 파일 (절대 올리면 안 되는 정보)
+.env
+.env.*
+
+
+# 빌드 시 생성되는 파일들
+/build/
+/out/
+/target/ # Maven 사용시
+
+
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
